@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drag and Drop Example</title>
+  <style>
+
+  .title{
+        text-align: center;
+    }
+    .container_wrapper{
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    #container1 {
+      min-width: 400px;
+      min-height: 300px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      float: left;
+      margin-right: 20px;
+    }
+
+    #container2 {
+      width: 100% ;
+      min-height: 600px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      float: left;
+      margin-right: 20px;
+    }
+
+    .item {
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      /* display: inline; */
+      padding: 5px;
+      margin-bottom: auto;
+      cursor: move;
+      max-width: 300px;
+      max-height: 300px;
+      border: 2px solid black;
+      margin-top: 20px;
+    }
+
+    .image {
+        width: 100%;
+        height: 100%;
+      }
+
+      .heading {
+        font-size: medium;
+        text-decoration: underline;
+
+      }
+
+      .para{
+        font-size: small;
+        text-align: left;
+      } 
+
+      .item.dragging {
+        opacity: 0.8;
+    }  
+    
+    #container2 {
+      background-color: #d4d4d4;
+    }
+
+    .success-message {
+        color: white;
+        margin-top: 50px;
+        /* padding: 20px; */
+        position: absolute;
+        background-color: green;
+        right: 5%;
+        top: 0;
+    }
+
+    .btn{
+        padding: 8px !important;
+        margin-top: 20px !important;
+        margin:0 auto;
+        display: block;
+        background-color: rgb(66, 66, 138);
+        color:white
+      }
+  </style>
+</head>
+<body>
+  <h1 class="title">Drag and Drop Example</h1>
+  <div class="container_wrapper">
+  <div class="container" id="container1">
+    <div class="item" draggable="true">
+      <img src="https://images3.alphacoders.com/165/thumb-1920-165265.jpg" alt="dark image" class="image" />
+        <h1 class="heading">Lorem ipsum dolor</h1>
+
+        <p class="para">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
+          dignissimos molestias harum totam labore quia sapiente nostrum libero
+          unde nobis ab, atque saepe facilis fugit aliquam, modi quo alias
+          perspiciatis!
+        </p>
+    </div>
+    <div class="item" draggable="true">Item 2</div>
+    <div class="item" draggable="true">Item 3</div>
+    <div class="item" draggable="true">Item 4</div>
+  </div>
+
+  <div class="container" id="container2"></div>
+  </div>
+
+  <button class="btn" onclick="reset()">Reset</button>
+  <p id="successMessage" class="success-message"></p>
+
+  <script>
+    // Get the containers
+    let container1 = document.getElementById("container1");
+    let container2 = document.getElementById("container2");
+
+    // Add event listeners for drag and drop
+    container1.addEventListener("dragstart", dragStart);
+    container2.addEventListener("dragover", dragOver);
+    container2.addEventListener("drop", drop);
+
+    // Store the dragged item
+    let draggedItem;
+
+    // Drag start event handler
+    function dragStart(event) {
+      draggedItem = event.target;
+      event.dataTransfer.setData("text/plain", draggedItem.innerHTML);
+      event.dataTransfer.effectAllowed = "move";
+    }
+
+    // Drag over event handler
+    function dragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+    }
+
+    // Drop event handler
+    function drop(event) {
+      event.preventDefault();
+      let data = event.dataTransfer.getData("text/plain");
+      let newItem = document.createElement("div");
+      newItem.classList.add("item");
+      newItem.innerHTML = data;
+      container2.appendChild(newItem);
+      document.getElementById("successMessage").textContent = "Item dropped successfully!";
+      setTimeout(function() {
+        document.getElementById("successMessage").textContent = "";
+      }, 1000); // 3000 milliseconds = 3 seconds
+    }
+
+    // Reset button click event handler
+    function reset() {
+      container2.innerHTML = "";
+      document.getElementById("successMessage").textContent = "";
+    }
+  </script>
+</body>
+</html>
